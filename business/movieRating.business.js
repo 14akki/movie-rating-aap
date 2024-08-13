@@ -35,8 +35,8 @@ const getByIDMovieRating = async (id) => {
 //Update the movie earning by 50cr by finding it by its name ;
 const updateEarningMovieRating = async (id, updateEarningMovie) => {
     try {
-        const updateMovingRating = await Item.findByIdAndUpdate(id, updateEarningMovie, { new: true });
-        if (!updateMovingRating) {
+        const updatedMovieRating = await Item.findByIdAndUpdate(id, updateEarningMovie, { new: true });
+        if (!updatedMovieRating) {
             throw new Error("Item not found");
         }
         return updatedMovieRating;
