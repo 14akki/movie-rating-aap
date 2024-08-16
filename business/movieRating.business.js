@@ -33,16 +33,12 @@ const getByIDMovieRating = async (id) => {
 
 
 //Update the movie earning by 50cr by finding it by its name ;
-const updateEarningMovieRating = async (id, updateEarningMovie) => {
+const updateMovieRating = async (id, toUpdateMovieData) => {
     try {
-        const updatedMovieRating = await Item.findByIdAndUpdate(id, updateEarningMovie, { new: true });
-        if (!updatedMovieRating) {
-            throw new Error("Item not found");
-        }
-        return updatedMovieRating;
-    } catch (err) {
-        console.error('Error updating item:', err);
-        throw new Error('Unable to update Item');
+        const updatedItem = await Item.findByIdAndUpdate(id, toUpdateMovieData, { new: true });
+        return updatedItem;
+    } catch (error) {
+        throw error;
     }
 }
 
@@ -52,5 +48,5 @@ module.exports = {
     createMovieRating,
     getAllMovieRating,
     getByIDMovieRating,
-    updateEarningMovieRating,
+    updateMovieRating,
 }

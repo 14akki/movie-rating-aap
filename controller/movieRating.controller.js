@@ -1,4 +1,4 @@
-const { createMovieRating, getAllMovieRating, getByIDMovieRating, updateEarningMovieRating } = require('../business/movieRating.business');
+const { createMovieRating, getAllMovieRating, getByIDMovieRating, updateMovieRating } = require('../business/movieRating.business');
 const { format } = require('date-fns');
 
 //Create 
@@ -40,52 +40,36 @@ const getByIdControllerMovieRating = async (req, res) => {
     }
 }
 
-//Update the movie earning by 50cr by finding it by its name ;
-
-// const updateEarningMovieRatingController = async (req, res) => {
-//     const { id } = req.params;
-//     try {
-//         let itemData = await updateEarningMovieRating(id);
-//         itemData.earning = req.body.earning;
-//         const item =await  updateItemById(id, itemData);
-//         if (!item) {
-//             res.status(404).json({ message: "Given Item id not exist" });
-//         } else {
-//             res.json(item)
-//         }
-//     } catch (error) {
-//         res.status(500).json({ message: "an error  occured while fetching the data", error: error.message });
-//     }
-// }
-
-const updateEarningMovieRatingController = async (req, res) => {
-    const { id } = req.params;
-    const { earning } = req.body;  // Extract the new earning value from the request body
-    
+//Update moving rating;
+const updateContollerMovieRating = async (req, res) => {
     try {
-        // Get the current item data
-        let itemData = await updateEarningMovieRating(id);  // This line should correctly get the current data
-        
-        if (!itemData) {
-            return res.status(404).json({ message: "Given Item ID does not exist" });
+        const { id } = req.params;
+        let movieRatingData = await getItemById(id);
+
+        if (!movieRatingData) {
+            return res.status(404).json({ message: "Movie rating not found" });
         }
 
-        // Update the earning field
-        itemData.earning = earning;
+        // to update particular field;
+        // movieRatingData.earning = req.body.earning;
 
-        // Save the updated item data back to the database
-        const updatedItem = await updateItemById(id, itemData);
-        
-        // Respond with the updated item
-        res.json(updatedItem);
+        //  Iterate over the keys in the request body and update the corresponding fields
+        Item.keys(req.body).forEach(key => {
+            movieRatingData[key] = req.body[key];
+        });
+
+        const updatedItem = await updateMovieRating(id, movieRatingData);
+        return res.status(200).json(updatedItem);
     } catch (error) {
-        res.status(500).json({ message: "An error occurred while updating the data", error: error.message });
+        return res.status(500).json({ message: "An error occurred", error: error.message });
     }
+
 }
+
 
 module.exports = {
     createContollerMovieRating,
     getAllControllerMovieRating,
     getByIdControllerMovieRating,
-    updateEarningMovieRatingController,
+    updateContollerMovieRating,
 }
