@@ -1,16 +1,30 @@
 //All call -
-const express= require('express');
-const app= express();
-const mongoose= require('mongoose');
+const express = require('express');
+const app = express();
+const mongoose = require('mongoose');
 
 //movie router;
-const movieRatingRouter= require('./route/movieRating.route');
+const movieRatingRouter = require('./route/movieRating.route');
 
+const userRouter = require('./route/userMovieRating.route')
+
+const verifylogin = require('./controller/login.controller');
+
+const { validateJWT } = require('./middleware/verifyJWT');
 
 //Global mount(trigger);
 app.use(express.json());
 
-app.use('/movieRating', movieRatingRouter);
+
+app.use('/movieRating', validateJWT, movieRatingRouter);
+
+
+
+app.use('/user', userRouter);
+
+
+
+app.use('/auth', verifylogin)
 
 
 
@@ -25,7 +39,7 @@ db.once('open', () => {
 });
 
 //Port no and listen-
-PORT_NO= process.env.PORT_NO;
+PORT_NO = process.env.PORT_NO;
 app.listen(PORT_NO, () => {
     console.log(`Application is running on Port number ${PORT_NO}`);
 });
