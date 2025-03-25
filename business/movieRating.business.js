@@ -1,5 +1,6 @@
 const Item = require('../module/movie.schema');
 
+
 //Create-
 const createMovieRating = async (MovieData) => {
     try {
@@ -31,6 +32,15 @@ const getByIDMovieRating = async (id) => {
     }
 }
 
+//get by movie name-
+const getbyname = async (name) => {
+    try {
+        const MovieRatingByName = await Item.findOne({ moviename: name });
+        return MovieRatingByName;
+    } catch (err) {
+        throw err;
+    }
+}
 
 //Update the movie earning by 50cr by finding it by its name ;
 const updateMovieRating = async (id, toUpdateMovieData) => {
@@ -43,10 +53,34 @@ const updateMovieRating = async (id, toUpdateMovieData) => {
 }
 
 //Delelte
+const deleteMovingRating = async (id) => {
+    try {
+        const deleteData = await Item.findByIdAndDelete(id);
+        return deleteData;
+    } catch (error) {
+        throw error;
+    }
+}
 
+// Export in Excel file;
+
+const ExportMovingRating = async () => {
+    try {
+      const item = await Item.find({}).lean();
+      return item;
+    } catch (error) {
+      console.error('Error fetching item:', error);
+      throw error;
+    }
+  };
+
+  
 module.exports = {
     createMovieRating,
     getAllMovieRating,
     getByIDMovieRating,
     updateMovieRating,
+    deleteMovingRating,
+    getbyname,
+    ExportMovingRating,
 }
